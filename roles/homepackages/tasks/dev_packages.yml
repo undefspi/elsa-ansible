@@ -2,13 +2,8 @@
 
 - name: install basic dev packages
   yum:
-    name: "{{ packages }}"
-  vars:
-    packages:
-    - ansible
-    - git
-    - docker
- 
+    name: "{{ elsa_dev_packages }}"
+    state: present
+    update_cache: yes
 
-      
         

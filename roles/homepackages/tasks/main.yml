@@ -1,4 +1,21 @@
 ---
 # tasks file for homepackages
-include: dev_packages.yml
+
+- name: get centos epel-release repo
+  get_url: 
+    url: http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    dest: /tmp/epel-release-latest-7.noarch.rpm
+    checksum: sha256:33b8b8250960874014d7c66d04ef12df3a71277b9eb6f2146bba7553daeaf910 
+
+- name: check epel-release-installed
+  shell: rpm -q epel-release-7-11
+  register: epel_installed
+
+- name: install epel-release-repo
+  shell: rpm -ivh epel-release-latest-7.noarch.rpm
+  args:
+    chdir: /tmp
+  when: epel_installed.rc == 1
+
+- include_tasks: dev_packages.yml
 

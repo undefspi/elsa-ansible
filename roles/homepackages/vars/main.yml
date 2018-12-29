@@ -1,2 +1,11 @@
 ---
 # vars file for homepackages
+git_version: "1.8.3.1"
+docker_version: "1.13.1"
+
+elsa_dev_packages:
+- git-{{ git_version }}
+- docker-{{ docker_version }}
+- ansible-2.7.5
+
+
