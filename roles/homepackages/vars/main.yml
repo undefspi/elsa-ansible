@@ -10,3 +10,5 @@ elsa_dev_packages:
 - ansible-2.7.5
 - htop
 
+vnc_user: undefspi
+
