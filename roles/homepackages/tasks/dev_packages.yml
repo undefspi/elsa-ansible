@@ -1,0 +1,14 @@
+---
+
+- name: install basic dev packages
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - ansible
+    - git
+    - docker
+ 
+
+      
+        

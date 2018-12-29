@@ -1,0 +1,14 @@
+---
+
+- name: Configure Elsa Home Media Box
+  hosts: localhost
+  become: true
+
+
+
+  tasks:
+  - import_role:
+    name: homepackages
+
+
+   
