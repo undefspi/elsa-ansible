@@ -18,4 +18,5 @@
   when: epel_installed.rc == 1
 
 - include_tasks: dev_packages.yml
+- include_tasks: install_vnc.yml
 
