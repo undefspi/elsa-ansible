@@ -10,40 +10,6 @@
     - elsamedia
     - devpackages
 
-- name: install gnome groups
-  yum:
-     name: "@Gnome Desktop"
-     state: present
-     update_cache: yes
-  when: ansible_facts['distribution'] == "CentOS"
-  tags:
-    - elsamedia
-    - enablevnc
 
-- name: install tiger vnc
-  yum:
-     name: "tigervnc-server"
-     state: present
-     update_cache: yes
-  when: ansible_facts['distribution'] == "CentOS"
-  tags:
-    - elsamedia
-    - enablevnc
-
-- name: create vnc user service
-  template:
-    src: vncserver@:1.service.j2
-    dest: /etc/systemd/system/vncserver@:1.service
-  when: ansible_facts['distribution'] == "CentOS"
-  tags:
-    - elsamedia
-    - enablevnc
-
-- name: set firewall access for vnc
-  shell: firewall-cmd --permanent --zone=public --add-service vnc-server && firewall-cmd --reload
-  when: ansible_facts['distribution'] == "CentOS"
-  tags:
-    - elsamedia
-    - enablevnc
 
 
