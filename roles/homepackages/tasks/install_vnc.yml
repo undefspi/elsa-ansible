@@ -22,7 +22,7 @@
 
 - name: create vnc user service
   template:
-    src: vncserver@:1.service.j2
+    src: vncserver_template.j2
     dest: /etc/systemd/system/vncserver@:1.service
   when: ansible_facts['distribution'] == "CentOS"
   tags:
