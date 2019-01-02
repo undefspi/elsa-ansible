@@ -1,4 +1,5 @@
 ---
+- include_vars: vault.yml
 
 - name: install gnome groups
   yum:
@@ -33,12 +34,12 @@
   file:
     path: "/home/{{ vnc_user }}/.vnc"
     mode: 0750
-    owner: "{{ vnc_owner }}"
+    owner: "{{ vnc_user }}"
     state: directory
 
 - name: "Generate vnc password for root user remotely"
   shell: |
-    "echo RedHat123 | vncpasswd -f > /home/{{ vnc_user }}/.vnc/passwd"
+    echo {{ vnc_password }} | vncpasswd -f > /home/{{ vnc_user }}/.vnc/passwd
 
 - name: set firewall access for vnc
   shell: firewall-cmd --permanent --zone=public --add-service vnc-server && firewall-cmd --reload
