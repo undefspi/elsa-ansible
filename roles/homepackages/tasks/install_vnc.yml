@@ -47,3 +47,13 @@
   tags:
     - elsamedia
     - enablevnc
+
+- name: just force systemd to reread configs (2.4 and above)
+  systemd:
+    name: vncserver@:1.service
+    enabled: yes
+    daemon_reload: yes
+  tags:
+    - elsamedia
+    - enablevnc
+
