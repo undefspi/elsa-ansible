@@ -1,7 +1,7 @@
 ---
 
 - name: Configure Elsa Home Media Box
-  hosts: localhost
+  hosts: elsamedia
   become: true
 
   tasks:
