@@ -7,3 +7,46 @@
     name: cifs-utils
     state: present
   when: ansible_facts['distribution'] == "CentOS"
+
+- name: create share mount root directory
+  file:
+    path: "{{ item.root_path }}"
+    state: directory
+    owner: apache
+    group: users
+    recurse: yes
+    mode: 0770
+  with_items: "{{ cifs_shares }}"
+
+
+- name: create mount directorys
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: apache
+    group: users
+    recurse: yes
+    mode: 0770
+  with_items: "{{ cifs_shares }}"
+
+
+- name: Generate CredFiles
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    mode: 400
+  with_items:
+    - { src: familylibrary.creds.j2, dest: "{{ familylibrary_creds_path }}" }
+
+
+- name: Mount shares
+  mount: 
+    path: "{{ item.path }}"
+    src:  "{{ item.src }}"
+    opts: "{{ item.options }}" 
+    fstype: cifs
+    state: mounted 
+  with_items: "{{ cifs_shares }}"
+  no_log: yes
+   
