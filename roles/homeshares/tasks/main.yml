@@ -1,2 +1,9 @@
 ---
 # tasks file for homeshares
+
+
+- name: Ensure CIFS-UTILS installed
+  yum:
+    name: cifs-utils
+    state: present
+  when: ansible_facts['distribution'] == "CentOS"
