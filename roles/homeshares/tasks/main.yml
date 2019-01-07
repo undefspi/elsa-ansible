@@ -1,6 +1,12 @@
 ---
 # tasks file for homeshares
 
+- name: Add user to users
+  user: 
+    name: undefspi
+    group: users
+    append: yes
+
 
 - name: Ensure CIFS-UTILS installed
   yum:
