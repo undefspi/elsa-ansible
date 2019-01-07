@@ -4,6 +4,9 @@ share_mnt_root: '/mnt/netgear'
 familylibrary_creds_path: '/root/familylibrary.creds'
 familylibrary_mnt_path: 'FamilyLibrary'
 
+mylibrary_creds_path: '/root/mylibrary.creds'
+mylibrary_mnt_path: 'MyLibrary'
 
 cifs_shares:
  - { root_path: "{{ share_mnt_root }}",  path: "{{ share_mnt_root }}/{{ familylibrary_mnt_path }}", src: "{{ familylibrary_net_path }}", options: "vers=1.0,credentials={{ familylibrary_creds_path }},uid=48,gid=100,rw,nounix,iocharset=utf8,file_mode=0770,dir_mode=0770" }
+ - { root_path: "{{ share_mnt_root }}",  path: "{{ share_mnt_root }}/{{ mylibrary_mnt_path }}", src: "{{ mylibrary_net_path }}", options: "vers=1.0,credentials={{ mylibrary_creds_path }},uid=48,gid=100,rw,nounix,iocharset=utf8,file_mode=0770,dir_mode=0770" }

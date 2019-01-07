@@ -38,6 +38,7 @@
     mode: 400
   with_items:
     - { src: familylibrary.creds.j2, dest: "{{ familylibrary_creds_path }}" }
+    - { src: mylibrary.creds.j2, dest: "{{ mylibrary_creds_path }}" }
 
 
 - name: Mount shares
