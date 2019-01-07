@@ -5,12 +5,12 @@ ansible-playbook -i inventory configure_elsamedia.yml --tag "elsamedia,mountnas"
 
 Example Vault entries
 
-vnc_password: 'mypassword'
+* vnc_password: 'mypassword'
 #cifs_shares
-myshare_net_path: '//192.168.0.2/myshare'
-myshare_net_path_hash: "{{ myshare_net_path | password_hash('sha512')}}"
-share_username: 'shareusername'
-share_password: 'sharepassword'
+* myshare_net_path: '//192.168.0.2/myshare'
+* myshare_net_path_hash: "{{ myshare_net_path | password_hash('sha512')}}"
+* share_username: 'shareusername'
+* share_password: 'sharepassword'
 
 ###
 tags include:
