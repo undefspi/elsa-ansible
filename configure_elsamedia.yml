@@ -15,5 +15,9 @@
     tags:
       - elsamedia
       - mountnas
+  - import_role:
+      name: prometheus
+    tags:
+      - prometheus
 
    
