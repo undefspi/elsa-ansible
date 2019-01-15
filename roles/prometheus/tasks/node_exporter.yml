@@ -1,0 +1,42 @@
+---
+- name: Check Node Exporter Installation
+  shell: test -d /home/prometheus/node_exporter
+  register: node_exporter_installed
+  failed_when: node_exporter_installed.rc >= 2
+ 
+- name: Install Node Exporter
+  block:
+    - get_url:
+        url: https://github.com/prometheus/node_exporter/releases/download/v0.17.0/node_exporter-0.17.0.linux-amd64.tar.gz
+        dest: /tmp
+        checksum: sha256:d2e00d805dbfdc67e7291ce2d2ff151f758dd7401dd993411ff3818d0e231489
+    - unarchive:
+        src: /tmp/node_exporter-0.17.0.linux-amd64.tar.gz
+        dest: /home/prometheus/
+        owner: prometheus
+        group: prometheus
+    - shell: mv node_exporter-0.17.0.linux-amd64 node_exporter
+      args:
+        chdir: /home/prometheus
+    - copy:
+        src: node_exporter.service
+        dest: /etc/systemd/system/node_exporter.service
+        owner: root
+        group: root
+        mode: 0644
+  when: node_exporter_installed.rc == 1
+
+- name: Reload Settings
+  systemd:
+    daemon_reload: yes
+
+- name: start and enable node_exporter
+  systemd:
+    name: node_exporter
+    state: started
+    enabled: yes
+
+- name: set firewall access for node_exporter
+  shell: firewall-cmd --permanent --zone=public --add-port=9100/tcp --permanent && firewall-cmd --reload
+  when: ansible_facts['distribution'] == "CentOS"
+

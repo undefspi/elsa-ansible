@@ -7,22 +7,45 @@
     name: prometheus
     shell: /bin/bash
 
-- name: Get Version 2.6 prometheus
-  get_url:
-    url: https://github.com/prometheus/prometheus/releases/download/v2.6.0/prometheus-2.6.0.linux-amd64.tar.gz
-    dest: /tmp
-    checksum: sha256:8f1f9ca9dbc06e1dc99200e30526ca8343dfe80c2bd950847d22182953261c6c
+- name: Check 
+  shell: test -d /home/prometheus/prometheus
+  register: prometheusInstalled
+  failed_when: prometheusInstalled.rc >= 2
 
-- name: Extract prometheus into $HOME/prometheus
-  unarchive:
-    src: /tmp/prometheus-2.6.0.linux-amd64.tar.gz 
-    dest: /home/prometheus/
+- name: Install Prometheus
+  block:
+    - get_url:
+        url: https://github.com/prometheus/prometheus/releases/download/v2.6.0/prometheus-2.6.0.linux-amd64.tar.gz
+        dest: /tmp
+        checksum: sha256:8f1f9ca9dbc06e1dc99200e30526ca8343dfe80c2bd950847d22182953261c6c
+    - unarchive:
+        src: /tmp/prometheus-2.6.0.linux-amd64.tar.gz 
+        dest: /home/prometheus/
+        owner: prometheus
+        group: prometheus
+    - shell: mv prometheus-2.6.0.linux-amd64 prometheus
+      args:
+        chdir: /home/prometheus
+    - copy:
+        src: prometheus.service
+        dest: /etc/systemd/system/prometheus.service
+        owner: root
+        group: root
+        mode: 0644
+  when: prometheusInstalled.rc == 1
 
-- name: Rename Folder
-  shell: mv prometheus-2.6.0.linux-amd64 prometheus
-  args:
-    chdir: /home/prometheus
+- name: Reload Settings
+  systemd:
+    daemon_reload: yes
 
+- name: start and enable
+  systemd:
+    name: prometheus
+    state: started
+    enabled: yes
 
+- name: set firewall access for prometheus
+  shell: firewall-cmd --permanent --zone=public --add-port=9090/tcp --permanent && firewall-cmd --reload
+  when: ansible_facts['distribution'] == "CentOS"
 
-  
+- include_tasks: node_exporter.yml
