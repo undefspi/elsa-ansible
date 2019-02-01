@@ -10,6 +10,14 @@
     tags:
       - elsamedia
       - enablevnc
-
+  - import_role:
+      name: homeshares
+    tags:
+      - elsamedia
+      - mountnas
+  - import_role:
+      name: prometheus
+    tags:
+      - prometheus
 
    
